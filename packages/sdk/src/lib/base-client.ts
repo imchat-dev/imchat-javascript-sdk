@@ -101,6 +101,52 @@ export abstract class BaseClient {
     )
   }
 
+  protected async uploadFile<T>(
+    endpoint: string,
+    file: File,
+    additionalData?: Record<string, string>
+  ): Promise<ApiResponse<T>> {
+    try {
+      const url = `${this.baseUrl}${endpoint}`
+      const formData = new FormData()
+      formData.append('file', file)
+      
+      if (additionalData) {
+        Object.entries(additionalData).forEach(([key, value]) => {
+          formData.append(key, value)
+        })
+      }
+
+      const controller = new AbortController()
+      const timeoutId = setTimeout(() => controller.abort(), this.timeout)
+
+      const response = await fetch(url, {
+        method: 'POST',
+        headers: {
+          'X-Client-Api-Key': this.clientApiKey,
+          ...(this.serverApiKey && { 'X-Server-Api-Key': this.serverApiKey }),
+        },
+        body: formData,
+        signal: controller.signal,
+      })
+
+      clearTimeout(timeoutId)
+
+      const data = response.ok ? await response.json() : null
+      
+      return {
+        data,
+        status: response.status,
+        error: response.ok ? undefined : `HTTP ${response.status}: ${response.statusText}`,
+      }
+    } catch (error) {
+      return {
+        status: 500,
+        error: error instanceof Error ? error.message : 'Upload failed',
+      }
+    }
+  }
+
   hasServerApiKey(): boolean {
     return !!this.serverApiKey
   }

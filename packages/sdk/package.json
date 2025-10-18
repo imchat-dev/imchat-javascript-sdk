@@ -1,12 +1,32 @@
 {
   "name": "@imchat/sdk",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "main": "dist/index.cjs",
   "module": "dist/index.mjs",
   "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.cjs",
+      "types": "./dist/index.d.ts"
+    }
+  },
   "files": [
     "dist"
   ],
+  "keywords": [
+    "imchat",
+    "sdk",
+    "api",
+    "assistant",
+    "chat",
+    "ai"
+  ],
+  "author": "imchat.ai",
+  "license": "Apache-2.0",
+  "engines": {
+    "node": ">=20.0.0"
+  },
   "scripts": {
     "build": "tsup src/index.ts --format cjs,esm --dts",
     "test": "jest",
