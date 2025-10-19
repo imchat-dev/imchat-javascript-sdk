@@ -1,6 +1,6 @@
 {
-  "name": "@imchat/sdk",
-  "version": "1.0.0",
+  "name": "@imchat-ai/sdk",
+  "version": "1.0.0-alpha.1",
   "main": "dist/index.cjs",
   "module": "dist/index.mjs",
   "types": "dist/index.d.ts",
@@ -28,7 +28,7 @@
     "node": ">=20.0.0"
   },
   "scripts": {
-    "build": "tsup src/index.ts --format cjs,esm --dts",
+    "build": "tsup src/index.ts --format cjs,esm --dts --minify",
     "test": "jest",
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage"
